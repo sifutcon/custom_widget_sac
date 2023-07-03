@@ -4,13 +4,13 @@
         <h1>Hello World</h1>
     `;
 
-    customElements.define('cascading_dd', class HelloWorld1 extends HTMLElement {
+    customElements.define('cascading-dd', class HelloWorld1 extends HTMLElement {
 
 
 		constructor() {
 			super(); 
 			this._shadowRoot = this.attachShadow({mode: "open"});
-            this._shadowRoot.appendChild(tmpl.content.cloneNode(true));
+            		this._shadowRoot.appendChild(tmpl.content.cloneNode(true));
 		}
 
         //Fired when the widget is added to the html DOM of the page
