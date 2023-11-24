@@ -31,7 +31,7 @@ var ajaxCall = (key, url, prompt) => {
   });
 };
 
-const url = "https://api.openai.com/v1/chat/completions";
+const url = "https://api.openai.com/v1/";
 
 (function () {
   const template = document.createElement("template");
