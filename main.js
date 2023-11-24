@@ -1,6 +1,5 @@
 import OpenAI from 'openai';
 const openai = new OpenAI({
-  apiKey: "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";
 });
 var ajaxCall = (key, url, prompt) => {
   return new Promise((resolve, reject) => {
