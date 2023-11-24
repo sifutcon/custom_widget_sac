@@ -1,3 +1,7 @@
+import OpenAI from 'openai';
+const openai = new OpenAI({
+  apiKey: "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";
+});
 var ajaxCall = (key, url, prompt) => {
   return new Promise((resolve, reject) => {
     $.ajax({
@@ -42,13 +46,19 @@ const url = "https://api.openai.com/v1";
     `;
   class MainWebComponent extends HTMLElement {
     async post(apiKey, endpoint, prompt) {
-      const { response } = await ajaxCall(
-        apiKey,
-        `${url}/${endpoint}`,
-        prompt
+      const  response  = await openai.chat.completions.create({
+        model: "gpt-3.5-turbo-1106",
+        messages: [
+          {
+            "role":"user",
+            "content":prompt,
+          }
+        ],
+        max_tokens: 1024,
+        temperature: 0.05,
       );
-      console.log(response.choices[0].text);
-      return response.choices[0].text;
+      console.log(response);
+      return response;
     }
   }
   customElements.define("custom-widget", MainWebComponent);
