@@ -1,6 +1,3 @@
-import OpenAI from 'openai';
-const openai = new OpenAI(
-);
 var ajaxCall = (key, url, prompt) => {
   return new Promise((resolve, reject) => {
     $.ajax({
@@ -33,7 +30,7 @@ var ajaxCall = (key, url, prompt) => {
   });
 };
 
-const url = "https://api.openai.com/v1";
+const url = "https://api.openai.com/v1/";
 
 (function () {
   const template = document.createElement("template");
@@ -45,19 +42,13 @@ const url = "https://api.openai.com/v1";
     `;
   class MainWebComponent extends HTMLElement {
     async post(apiKey, endpoint, prompt) {
-      const  response  = await openai.chat.completions.create({
-        model: "gpt-3.5-turbo-1106",
-        messages: [
-          {
-            "role":"user",
-            "content":prompt,
-          }
-        ],
-        max_tokens: 1024,
-        temperature: 0.05,
+      const { response } = await ajaxCall(
+        apiKey,
+        `${url}/${endpoint}`,
+        prompt
       );
-      console.log(response);
-      return response;
+      console.log(response.choices[0].text);
+      return response.choices[0].text;
     }
   }
   customElements.define("custom-widget", MainWebComponent);
