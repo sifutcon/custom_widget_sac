@@ -1,3 +1,6 @@
+import { OpenAI } from "openai";
+
+const openai = new OpenAI()
 var ajaxCall = (key, url, prompt) => {
   return new Promise((resolve, reject) => {
     $.ajax({
@@ -5,8 +8,17 @@ var ajaxCall = (key, url, prompt) => {
       type: "POST",
       dataType: "json",
       data: JSON.stringify({
-        model: "gpt-3.5-turbo-instruct",
-        prompt: prompt,
+        model: "gpt-3.5-turbo-1106",
+        messages: [
+          {
+            role: user,
+            content: prompt
+          },
+          {
+          role: system,
+          content : "You are a data analyst"
+          }
+        ],
         max_tokens: 1024,
         n: 1,
         temperature: 0.5,
@@ -46,8 +58,8 @@ const url = "https://api.openai.com/v1/";
         `${url}/${endpoint}`,
         prompt
       );
-      console.log(response.choices[0].text);
-      return response.choices[0].text;
+      console.log(response.choices[0].message.content);
+      return response.choices[0].message.content;
     }
   }
   customElements.define("custom-widget", MainWebComponent);
