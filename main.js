@@ -5,13 +5,11 @@ var ajaxCall = (key, url, prompt) => {
       type: "POST",
       dataType: "json",
       data: JSON.stringify({
-        model: "gpt-3.5-turbo-1106",
+        model: "gpt-3.5-turbo-instruct",
         prompt: prompt,
         max_tokens: 1024,
         n: 1,
-        temperature: 0.05,
-        
-        
+        temperature: 0.5,
       }),
       headers: {
         "Content-Type": "application/json",
@@ -29,6 +27,7 @@ var ajaxCall = (key, url, prompt) => {
     });
   });
 };
+
 
 const url = "https://api.openai.com/v1/";
 
