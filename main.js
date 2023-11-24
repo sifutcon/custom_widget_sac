@@ -1,6 +1,6 @@
 import OpenAI from 'openai';
-const openai = new OpenAI({
-});
+const openai = new OpenAI(
+);
 var ajaxCall = (key, url, prompt) => {
   return new Promise((resolve, reject) => {
     $.ajax({
