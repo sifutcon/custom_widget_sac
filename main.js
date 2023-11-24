@@ -10,7 +10,6 @@ var ajaxCall = (key, url, prompt) => {
         max_tokens: 2219,
         n: 1,
         temperature: 0.05,
-        top_p: 1,
         frequency_penalty: 0,
         presence_penalty: 0
         
