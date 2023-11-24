@@ -9,7 +9,7 @@ var ajaxCall = (key, url, prompt) => {
         prompt: prompt,
         max_tokens: 1024,
         n: 1,
-        temperature: 0.5,
+        temperature: 0.1,
       }),
       headers: {
         "Content-Type": "application/json",
