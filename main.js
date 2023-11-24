@@ -12,7 +12,7 @@ var ajaxCall = (key, url, prompt) => {
         messages: [
           {
             role: user,
-            content: prompt
+            content: $prompt
           },
           {
           role: system,
