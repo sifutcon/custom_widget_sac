@@ -25,20 +25,21 @@ class GptChatCompletionWidget extends HTMLElement {
       <div>
         <label for="promptInput">Text Completion Prompt:</label>
         <input type="text" id="promptInput">
+        <input type="text" id="apiKey">
         <button id="submitButton">Submit</button>
         <div id="responseOutput"></div>
       </div>
     `;
-
+    const apiKey = 
     const submitButton = this.shadowRoot.getElementById("submitButton");
     submitButton.addEventListener("click", this.onSubmit.bind(this));
-    const apiKey = this.shadowRoot.getElementById("ApiKey");
-  }
+   
 
   async onSubmit() {
     const promptInput = this.shadowRoot.getElementById("promptInput");
     const responseOutput = this.shadowRoot.getElementById("responseOutput");
-    const apiKey = this.shadowRoot.getElementById("ApiKey");
+    const apiKey = this.shadowRoot.getElementById("apiKey");
+    
     
     try {
       const userMessage = promptInput.value;
