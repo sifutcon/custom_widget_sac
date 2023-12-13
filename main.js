@@ -32,14 +32,14 @@ class GptChatCompletionWidget extends HTMLElement {
 
     const submitButton = this.shadowRoot.getElementById("submitButton");
     submitButton.addEventListener("click", this.onSubmit.bind(this));
+    const apiKey = this.shadowRoot.getElementById("ApiKey");
   }
 
   async onSubmit() {
     const promptInput = this.shadowRoot.getElementById("promptInput");
     const responseOutput = this.shadowRoot.getElementById("responseOutput");
-
-    const apiKey = this.getAttribute("api-key"); // Assuming you set API key as an attribute in SAC
-
+    const apiKey = this.shadowRoot.getElementById("ApiKey");
+    
     try {
       const userMessage = promptInput.value;
       const { response } = await this.sendMessage(apiKey, userMessage);
