@@ -1,4 +1,7 @@
+import $ from "jquery";
+import { OpenAI } from "openai";
 
+const openai = new OpenAI();
 const apiUrl = "https://api.openai.com/v1/";
 
 const chatbotConfig = {
@@ -23,26 +26,26 @@ class GptChatCompletionWidget extends HTMLElement {
         /* Add your custom styles here */
       </style>
       <div>
+        <label for="apiKeyInput">OpenAI API Key:</label>
+        <input type="text" id="apiKeyInput">
         <label for="promptInput">Text Completion Prompt:</label>
         <input type="text" id="promptInput">
         <button id="submitButton">Submit</button>
-        <div id="apikey_input>
-          <input type="text" id="apiKey">
-        </div>
         <div id="responseOutput"></div>
       </div>
     `;
 
     const submitButton = this.shadowRoot.getElementById("submitButton");
     submitButton.addEventListener("click", this.onSubmit.bind(this));
-    
   }
 
   async onSubmit() {
+    const apiKeyInput = this.shadowRoot.getElementById("apiKeyInput");
     const promptInput = this.shadowRoot.getElementById("promptInput");
     const responseOutput = this.shadowRoot.getElementById("responseOutput");
-    const apiKey = this.shadowRoot.getElementById("apiKey");
-    
+
+    const apiKey = apiKeyInput.value;
+
     try {
       const userMessage = promptInput.value;
       const { response } = await this.sendMessage(apiKey, userMessage);
