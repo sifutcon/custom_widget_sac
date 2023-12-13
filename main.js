@@ -1,7 +1,4 @@
-import $ from "jquery";
-import { OpenAI } from "openai";
 
-const openai = new OpenAI();
 const apiUrl = "https://api.openai.com/v1/";
 
 const chatbotConfig = {
