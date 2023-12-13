@@ -25,8 +25,11 @@ class GptChatCompletionWidget extends HTMLElement {
       <div>
         <label for="promptInput">Text Completion Prompt:</label>
         <input type="text" id="promptInput">
+      </div>
+      <div>
         <input type="text" id="apiKey">
         <button id="submitButton">Submit</button>
+      </div>
         <div id="responseOutput"></div>
       </div>
     `;
