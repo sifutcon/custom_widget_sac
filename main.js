@@ -1,4 +1,3 @@
-
 const apiUrl = "https://api.openai.com/v1/";
 
 const chatbotConfig = {
@@ -22,15 +21,13 @@ class GptChatCompletionWidget extends HTMLElement {
       <style>
         /* Add your custom styles here */
       </style>
-      <div id="promtInput">
-        <label for="promptInput">Text Completion Prompt:</label>
-        <input type="text" id="promptInput">
-      </div>
-      <div id=apiKey">
-        <input type="text" id="apiKey">
-        <button id="submitButton">Submit</button>
-      </div>
-      <div id="responseOutput"></div>
+      
+      <label for="promptInput">Text Completion Prompt:</label>
+      <input type="text" id="promptInput">
+      <input type="text" id="apiKey">
+      <button id="submitButton">Submit</button>
+      
+      <div id="responseOutput"></div> 
     `;
     const submitButton = this.shadowRoot.getElementById("submitButton");
     submitButton.addEventListener("click", this.onSubmit.bind(this));
