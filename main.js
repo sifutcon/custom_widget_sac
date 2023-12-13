@@ -45,7 +45,7 @@ class GptChatCompletionWidget extends HTMLElement {
     try {
       const userMessage = promptInput.value;
       const { response } = await this.sendMessage(apiKey, userMessage);
-      const botResponse = response.choices[0]?.message?.content || "";
+      const botResponse = response.choices[0];
       responseOutput.innerText = `Bot Response: ${botResponse}`;
     } catch (error) {
       console.error("Error:", error);
