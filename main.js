@@ -22,11 +22,11 @@ class GptChatCompletionWidget extends HTMLElement {
       <style>
         /* Add your custom styles here */
       </style>
-      <div>
+      <div id="promtInput">
         <label for="promptInput">Text Completion Prompt:</label>
         <input type="text" id="promptInput">
       </div>
-      <div>
+      <div id=apiKey">
         <input type="text" id="apiKey">
         <button id="submitButton">Submit</button>
       </div>
