@@ -1,5 +1,5 @@
-import $ from "jquery";
-import { OpenAI } from "openai";
+const $ = require("jquery");
+const { OpenAI } = require("openai");
 const apiUrl = "https://api.openai.com/v1/";
 const openai = new OpenAI();
 
