@@ -1,3 +1,4 @@
+
 const apiUrl = "https://api.openai.com/v1/";
 
 const chatbotConfig = {
@@ -21,23 +22,26 @@ class GptChatCompletionWidget extends HTMLElement {
       <style>
         /* Add your custom styles here */
       </style>
-      
-      <label for="promptInput">Text Completion Prompt:</label>
-      <input type="text" id="promptInput">
-      <input type="text" id="apiKey">
-      <button id="submitButton">Submit</button>
-      
-      <div id="responseOutput"></div> 
+      <div>
+        <label for="promptInput">Text Completion Prompt:</label>
+        <input type="text" id="promptInput">
+        <button id="submitButton">Submit</button>
+        <div id="apikey_input>
+          <input type="text" id="apiKey">
+        </div>
+        <div id="responseOutput"></div>
+      </div>
     `;
+
     const submitButton = this.shadowRoot.getElementById("submitButton");
     submitButton.addEventListener("click", this.onSubmit.bind(this));
-   
+    
+  }
 
   async onSubmit() {
     const promptInput = this.shadowRoot.getElementById("promptInput");
     const responseOutput = this.shadowRoot.getElementById("responseOutput");
     const apiKey = this.shadowRoot.getElementById("apiKey");
-    
     
     try {
       const userMessage = promptInput.value;
