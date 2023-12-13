@@ -33,7 +33,6 @@ class GptChatCompletionWidget extends HTMLElement {
         <div id="responseOutput"></div>
       </div>
     `;
-    const apiKey = 
     const submitButton = this.shadowRoot.getElementById("submitButton");
     submitButton.addEventListener("click", this.onSubmit.bind(this));
    
