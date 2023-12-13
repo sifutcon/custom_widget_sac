@@ -1,5 +1,5 @@
-const $ = require("jquery");
-const { OpenAI } = require("openai");
+import $ from "jquery";
+import { OpenAI } from "openai";
 const apiUrl = "https://api.openai.com/v1/";
 const openai = new OpenAI();
 
@@ -47,8 +47,8 @@ class GptChatCompletionWidget extends HTMLElement {
 
     try {
       const userMessage = promptInput.value;
-      const { response } = await openai.completions.create(apiKey, userMessage);
-      const botResponse = response.choices[0];
+      const { response } = await this.sendMessage(apiKey, userMessage);
+      const botResponse = response.choices[0]?.message?.content || "";
       responseOutput.innerText = `Bot Response: ${botResponse}`;
     } catch (error) {
       console.error("Error:", error);
