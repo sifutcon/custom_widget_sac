@@ -1,66 +1,81 @@
+import $ from "jquery";
 import { OpenAI } from "openai";
 
-const openai = new OpenAI()
-var ajaxCall = (key, url, prompt) => {
-  return new Promise((resolve, reject) => {
-    $.ajax({
-      url: url,
+const openai = new OpenAI();
+const apiUrl = "https://api.openai.com/v1/";
+
+const chatbotConfig = {
+  model: "gpt-3.5-turbo",
+  role: "user",
+  systemMessage: "You are a data analyst",
+  maxTokens: 1024,
+  numResponses: 1,
+  temperature: 0.5,
+};
+
+class GptChatCompletionWidget extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({ mode: "open" });
+    this.render();
+  }
+
+  render() {
+    this.shadowRoot.innerHTML = `
+      <style>
+        /* Add your custom styles here */
+      </style>
+      <div>
+        <label for="promptInput">Text Completion Prompt:</label>
+        <input type="text" id="promptInput">
+        <button id="submitButton">Submit</button>
+        <div id="responseOutput"></div>
+      </div>
+    `;
+
+    const submitButton = this.shadowRoot.getElementById("submitButton");
+    submitButton.addEventListener("click", this.onSubmit.bind(this));
+  }
+
+  async onSubmit() {
+    const promptInput = this.shadowRoot.getElementById("promptInput");
+    const responseOutput = this.shadowRoot.getElementById("responseOutput");
+
+    const apiKey = this.getAttribute("api-key"); // Assuming you set API key as an attribute in SAC
+
+    try {
+      const userMessage = promptInput.value;
+      const { response } = await this.sendMessage(apiKey, userMessage);
+      const botResponse = response.choices[0]?.message?.content || "";
+      responseOutput.innerText = `Bot Response: ${botResponse}`;
+    } catch (error) {
+      console.error("Error:", error);
+      responseOutput.innerText = "Error occurred.";
+    }
+  }
+
+  async sendMessage(apiKey, userMessage) {
+    return $.ajax({
+      url: `${apiUrl}/completions`, // Adjust the endpoint as needed
       type: "POST",
       dataType: "json",
       data: JSON.stringify({
-        model: "gpt-3.5-turbo-1106",
+        model: chatbotConfig.model,
         messages: [
-          {
-            role: user,
-            content: $prompt
-          },
-          {
-          role: system,
-          content : "You are a data analyst"
-          }
+          { role: chatbotConfig.role, content: userMessage },
+          { role: "system", content: chatbotConfig.systemMessage },
         ],
-        max_tokens: 1024,
-        n: 1,
-        temperature: 0.5,
+        max_tokens: chatbotConfig.maxTokens,
+        n: chatbotConfig.numResponses,
+        temperature: chatbotConfig.temperature,
       }),
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${key}`,
+        Authorization: `Bearer ${apiKey}`,
       },
       crossDomain: true,
-      success: function (response, status, xhr) {
-        resolve({ response, status, xhr });
-      },
-      error: function (xhr, status, error) {
-        const err = new Error('xhr error');
-        err.status = xhr.status;
-        reject(err);
-      },
     });
-  });
-};
-
-
-const url = "https://api.openai.com/v1/";
-
-(function () {
-  const template = document.createElement("template");
-  template.innerHTML = `
-      <style>
-      </style>
-      <div id="root" style="width: 100%; height: 100%;">
-      </div>
-    `;
-  class MainWebComponent extends HTMLElement {
-    async post(apiKey, endpoint, prompt) {
-      const { response } = await ajaxCall(
-        apiKey,
-        `${url}/${endpoint}`,
-        prompt
-      );
-      console.log(response.choices[0].message.content);
-      return response.choices[0].message.content;
-    }
   }
-  customElements.define("custom-widget", MainWebComponent);
-})();
+}
+
+customElements.define("gpt-chat-completion-widget", GptChatCompletionWidget);
