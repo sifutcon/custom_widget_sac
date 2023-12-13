@@ -53,7 +53,7 @@ class GptChatCompletionWidget extends HTMLElement {
 
   async sendMessage(apiKey, userMessage) {
     return $.ajax({
-      url: `${apiUrl}/completions`, // Adjust the endpoint as needed
+      url: `${apiUrl}chat/completions`, // Adjust the endpoint as needed
       type: "POST",
       dataType: "json",
       data: JSON.stringify({
