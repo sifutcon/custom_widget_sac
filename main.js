@@ -4,7 +4,7 @@ const apiUrl = "https://api.openai.com/v1/";
 const openai = new OpenAI();
 
 const chatbotConfig = {
-  model: "gpt-3.5-turbo-0613",
+  model: "gpt-3.5-turbo",
   role: "user",
   systemMessage: "You are a data analyst",
   maxTokens: 1024,
@@ -47,8 +47,9 @@ class GptChatCompletionWidget extends HTMLElement {
 
     try {
       const userMessage = promptInput.value;
-      const { response } = await this.sendMessage(apiKey, userMessage);
-      const botResponse = response.choices[0]?.message?.content || "";
+      `const { response } = await this.sendMessage(apiKey, userMessage);`
+      const { response } = await openai.chat.completions.create(this.sendMessage(apiKey, userMessage);
+      const botResponse = response.choices[0];
       responseOutput.innerText = `Bot Response: ${botResponse}`;
     } catch (error) {
       console.error("Error:", error);
