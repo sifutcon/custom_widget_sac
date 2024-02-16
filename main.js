@@ -1,84 +1,53 @@
-const $ = require("jquery");
-const { OpenAI } = require("openai");
-const apiUrl = "https://api.openai.com/v1/";
-const openai = new OpenAI();
-
-const chatbotConfig = {
-  model: "gpt-3.5-turbo",
-  role: "user",
-  systemMessage: "You are a data analyst",
-  maxTokens: 1024,
-  numResponses: 1,
-  temperature: 0.5,
-};
-
-class GptChatCompletionWidget extends HTMLElement {
-  constructor() {
-    super();
-    this.attachShadow({ mode: "open" });
-    this.render();
-  }
-
-  render() {
-    this.shadowRoot.innerHTML = `
-      <style>
-        /* Add your custom styles here */
-      </style>
-      <div>
-        <label for="apiKeyInput">OpenAI API Key:</label>
-        <input type="text" id="apiKeyInput">
-        <label for="promptInput">Text Completion Prompt:</label>
-        <input type="text" id="promptInput">
-        <button id="submitButton">Submit</button>
-        <div id="responseOutput"></div>
-      </div>
-    `;
-
-    const submitButton = this.shadowRoot.getElementById("submitButton");
-    submitButton.addEventListener("click", this.onSubmit.bind(this));
-  }
-
-  async onSubmit() {
-    const apiKeyInput = this.shadowRoot.getElementById("apiKeyInput");
-    const promptInput = this.shadowRoot.getElementById("promptInput");
-    const responseOutput = this.shadowRoot.getElementById("responseOutput");
-
-    const apiKey = apiKeyInput.value;
-
-    try {
-      const userMessage = promptInput.value;
-      `const { response } = await this.sendMessage(apiKey, userMessage);`
-      const { response } = await openai.chat.completions.create(this.sendMessage(apiKey, userMessage));
-      const botResponse = response.choices[0];
-      responseOutput.innerText = `Bot Response: ${botResponse}`;
-    } catch (error) {
-      console.error("Error:", error);
-      responseOutput.innerText = "Error occurred.";
-    }
-  }
-
-  async sendMessage(apiKey, userMessage) {
-    return $.ajax({
-      url: `${apiUrl}chat/completions`, // Adjust the endpoint as needed
+var ajaxCall = (key, url, prompt) => {
+  return new Promise((resolve, reject) => {
+    $.ajax({
+      url: url,
       type: "POST",
       dataType: "json",
       data: JSON.stringify({
-        model: chatbotConfig.model,
-        messages: [
-          { role: chatbotConfig.role, content: userMessage },
-          { role: "system", content: chatbotConfig.systemMessage },
-        ],
-        max_tokens: chatbotConfig.maxTokens,
-        n: chatbotConfig.numResponses,
-        temperature: chatbotConfig.temperature,
+        model: "text-davinci-002",
+        prompt: prompt,
+        max_tokens: 1024,
+        n: 1,
+        temperature: 0.5,
       }),
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${apiKey}`,
+        Authorization: `Bearer ${key}`,
       },
       crossDomain: true,
+      success: function (response, status, xhr) {
+        resolve({ response, status, xhr });
+      },
+      error: function (xhr, status, error) {
+        const err = new Error('xhr error');
+        err.status = xhr.status;
+        reject(err);
+      },
     });
-  }
-}
+  });
+};
 
-customElements.define("gpt-chat-completion-widget", GptChatCompletionWidget);
+const url = "https://api.openai.com/v1";
+
+(function () {
+  const template = document.createElement("template");
+  template.innerHTML = `
+      <style>
+      </style>
+      <div id="root" style="width: 100%; height: 100%;">
+      </div>
+    `;
+  class MainWebComponent extends HTMLElement {
+    async post(apiKey, endpoint, prompt) {
+      const { response } = await ajaxCall(
+        apiKey,
+        `${url}/${endpoint}`,
+        prompt
+      );
+      //console.log(response.choices[0].text);
+      return response.choices[0].text;
+    }
+  }
+  customElements.define("custom-widget", MainWebComponent);
+})();
